@@ -1,0 +1,92 @@
+{% extends "/main.html" %}
+{% from "_form_helpers.html" import render_error, render_textarea %}
+
+{% block styles %}{% endblock %}
+
+{% block body %}
+
+      <!-- Submit a new book item form -->
+    <div class="container middle">
+      	<div class="row-fluid">
+            
+            <form method='POST' action="/submit">
+                <legend><h3>Create a Class:</h3></legend>
+
+                <p>
+                <label for="title">Title</label>
+                {{ form.title(class='myTextboxCssClass', type='textarea') }}
+                {{ render_error(form.title) }}  {# render_error inside _form_helpers.html #}
+                </p>
+                <!--
+                {{ form.title.label(class='myLabelCssClass') }}
+                <input type="text" id="title" name="title">
+                -->
+
+                <p>
+                <label for="instructor">Instructor</label>
+                {{ form.author(class='myTextboxCssClass', type='textarea') }}
+                {{ render_error(form.author) }}  {# render_error inside _form_helpers.html #}
+                </p>
+                <!--
+                {{ form.author.label(class='myLabelCssClass') }}
+                <input type="text" id="author" name="author" value="{{ form.author }}">
+                -->
+
+                <p>
+                <label>Categories</label>
+                <em><span class="help-block">(Select as many as you need)</span></em>
+
+                {# comment - loop through categories and create checkboxes #}
+                {% for c in categories|sort %}
+                <label class="checkbox">
+                <input type="checkbox" name="categories" value="{{ c|replace(" ","_") }}" {% if c|replace(" ","_") in form.categories.data %}checked=checked{% endif %} > {{ c|title }}
+                </label>
+                {% endfor %}
+                <!-- Book Genre -->
+                </p>
+
+                <br>
+                <label for="description">Description</label>
+                {{ render_textarea(form.description, cols="50", rows="6") }} {# render_textarea inside _form_helpers.html #}
+                {{ render_error(form.description) }} {# render_error inside _form_helpers.html #}
+                <!--
+                {{ form.description.label }}
+                <input type="text" id="description" name="description">
+                -->
+
+                <hr>
+                <p>
+                <label for="year">Year</label>
+                {{ form.year(class='myTextboxCssClass', type='textarea') }}
+                {{ render_error(form.year) }}  {# render_error inside _form_helpers.html #}
+                </p>
+                <!--
+                {{ form.owner.label(class='myLabelCssClass') }}
+                <input type="text" id="owner" name="owner">
+                -->
+
+                <p>
+                <label for="semester">Semester</label>
+                {{ form.semester(class='myTextboxCssClass', type='textarea') }}
+                {{ render_error(form.semester) }}  {# render_error inside _form_helpers.html #}
+                </p>
+
+                <hr>
+                <p>
+                <label for="units">Units</label>
+                {{ form.units(class='myTextboxCssClass', type='textarea') }}
+                {{ render_error(form.units) }}  {# render_error inside _form_helpers.html #}
+                </p>
+
+
+
+                <button type="submit" class="btn btn-info btn-large">Add Book</button>
+          </form>
+
+        </div>
+    </div>
+
+{% endblock %}
+
+
+{% block scripts %}{% endblock %}

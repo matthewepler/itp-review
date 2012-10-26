@@ -1,3 +1,4 @@
+
 # -*- coding: utf-8 -*-
 
 import os, datetime
@@ -26,54 +27,35 @@ categories = ['web','physical computing','programming','video','music','installa
 
 # --------- Routes ----------
 
-@app.route("/form")
-def form():
-	return render_template('form.html')
+@app.route("/", methods=['GET','POST'])
 
-@app.route("/")
-def index():
-	return render_template('main.html', course=models.Course.objects())
+	return render_template('input.html')
 
 # this is our main page
-@app.route("/submit", methods=['GET','POST'])
-def submit():
+@app.route("/input", methods=['GET','POST'])
+def input():
 
 	app.logger.debug(request.form.getlist('categories'))
 
 	# get Idea form from models.py
 	course_form = models.CourseForm(request.form)
 	
-	if request.method == "POST" and course_form.validate():
+	request.method == "POST" and course_form.validate()
 	
 	# get form data - create new idea
-		course = models.Course()
-		
-		course.title = request.form.get('title')
-		course.slug = slugify(course.title)
-		course.description = request.form.get('description','')
-		course.instructor = request.form.get('instructor')
-		course.semester = request.form.get('semester')
-		course.year = request.form.get('year')
-		course.categories = request.form.getlist('categories')
-		course.units = request.form.get('units')
+	course = models.Course()
+	course.title = request.form.get('title')
+	course.slug = slugify(course.title)
+	course.description = request.form.get('description','')
+	course.instructor = request.form.get('instructor')
+	course.semester = request.form.get('semester')
+	course.year = request.form.get('year')
+	course.categories = request.form.getlist('categories')
+	course.units = request.form.get('units')
 	
-		course.save()
+	course.save()
 
-		return redirect('/courses/%s' % course.slug)
-
-	else:
-
-		if request.form.getlist('categories'):
-			for c in request.form.getlist('categories'):
-				course_form.categories.append_entry(c)
-
-		templateData = {
-			'courses' : models.Course.objects(),
-			'categories' : categories,
-			'form' : course_form
-		}
-
-		return render_template("submit.html", **templateData)
+	return redirect('/courses/%s' % course.slug)
 
 
 @app.route("/category/<cat_name>")
